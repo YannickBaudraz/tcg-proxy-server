@@ -1,3 +1,8 @@
 name = "tcg-proxy"
 main = "src/index.ts"
 compatibility_date = "2023-01-04"
+account_id = "a35ca26df4744d9e73be09c7c83fa6dd"
+
+# The necessary secrets are:
+# - POKEMONTCG_API_KEY
+# Run `echo <VALUE> | wrangler secret put <NAME>` for each of these
