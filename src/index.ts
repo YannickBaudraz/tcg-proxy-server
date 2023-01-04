@@ -17,7 +17,14 @@ export interface Env {
 	//
 	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
 	// MY_BUCKET: R2Bucket;
+	POKEMONTCG_API_KEY: string;
 }
+
+const corsHeaders = {
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Methods': 'GET',
+	'Access-Control-Allow-Headers': '*',
+};
 
 export default {
 	async fetch(
@@ -25,6 +32,16 @@ export default {
 		env: Env,
 		ctx: ExecutionContext
 	): Promise<Response> {
-		return new Response("Hello World!");
+		if (request.method === 'OPTIONS')
+			return new Response(null, { headers: corsHeaders });
+
+		console.log(request.headers);
+
+		return new Response('Hello World!', {
+			headers: {
+				'content-type': 'text/plain;charset=UTF-8',
+				...corsHeaders,
+			},
+		});
 	},
 };
