@@ -26,6 +26,15 @@ const corsHeaders = {
 	'Access-Control-Allow-Headers': '*',
 };
 
+async function getTCGResource(resourcePath: string, apiKey: string) {
+	const url = `https://api.pokemontcg.io/v2/${resourcePath}`;
+	const headers = { 'X-Api-Key': apiKey };
+
+	const response = await fetch(url, { headers });
+
+	return response.body;
+}
+
 export default {
 	async fetch(
 		request: Request,
@@ -35,11 +44,22 @@ export default {
 		if (request.method === 'OPTIONS')
 			return new Response(null, { headers: corsHeaders });
 
-		console.log(request.headers);
+		const tcgResourcePath = request.headers.get('X-TCG-RESOURCE');
 
-		return new Response('Hello World!', {
+		if (!tcgResourcePath)
+			return new Response('Missing X-TCG-RESOURCE header', {
+				status: 400,
+				headers: corsHeaders,
+			});
+
+		const resource = await getTCGResource(
+			tcgResourcePath,
+			env.POKEMONTCG_API_KEY
+		);
+
+		return new Response(resource, {
 			headers: {
-				'content-type': 'text/plain;charset=UTF-8',
+				'content-type': 'application/json',
 				...corsHeaders,
 			},
 		});
