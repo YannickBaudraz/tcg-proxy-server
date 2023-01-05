@@ -30,9 +30,7 @@ async function getTCGResource(resourcePath: string, apiKey: string) {
 	const url = `https://api.pokemontcg.io/v2/${resourcePath}`;
 	const headers = { 'X-Api-Key': apiKey };
 
-	const response = await fetch(url, { headers });
-
-	return response.body;
+	return await fetch(url, { headers });
 }
 
 export default {
@@ -52,12 +50,13 @@ export default {
 				headers: corsHeaders,
 			});
 
-		const resource = await getTCGResource(
+		const response = await getTCGResource(
 			tcgResourcePath,
 			env.POKEMONTCG_API_KEY
 		);
 
-		return new Response(resource, {
+		return new Response(response.body, {
+			status: response.status,
 			headers: {
 				'content-type': 'application/json',
 				...corsHeaders,
