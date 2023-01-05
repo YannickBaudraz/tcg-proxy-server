@@ -24,7 +24,9 @@ This project is built with [Node.js](https://nodejs.org/)/[TypeScript](https://w
 To start the proxy server locally, run the following command:
 
 ```shell
-wrangler dev
+wrangler dev --local
+# or
+npm run start
 ```
 
 The proxy server will start running on port 8787. You can make requests to the Pokemon Trading Card Game API through the proxy by sending a request to `http://localhost:8787`. The endpoint for the API request should be specified in the `X-TCG-RESOURCE` header.
@@ -35,6 +37,8 @@ To deploy the proxy server to Cloudflare Workers, run the following command:
 
 ```shell
 wrangler publish
+# or
+npm run deploy
 ```
 
 This will build and deploy the proxy server to Cloudflare Workers. The proxy server will be accessible at a URL provided by Cloudflare, such as `https://your-worker-name.your-domain.workers.dev`.
